@@ -14,6 +14,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const reponses = require("../responses.json");
 import MessageBubble from "../components/MessageBubble";
+import ContactBubble from '../components/ContactBubble'
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -74,6 +75,7 @@ const ChatApp = () => {
   return (
     <>
       <View style={styles.container}>
+        <ContactBubble />
         <View style={styles.messageContainer}>
           <FlatList
             data={messages}
