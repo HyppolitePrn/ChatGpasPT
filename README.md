@@ -2,8 +2,7 @@
 # Projet de Messagerie Instantanée avec React Native, Node.js, MongoDB et Expo
 
 ## Introduction
-- Objectif du projet : Développer une application de messagerie instantanée en utilisant une stack technologique moderne.
-- La messagerie instantanée est essentielle pour une communication rapide et en temps réel.
+- Objectif du projet : Développer une application de messagerie instantanée qui requiert l'usage de websockets.
 
 ## Technologies utilisées
 - **React Native** : Framework de développement d'applications mobiles multiplateformes.
