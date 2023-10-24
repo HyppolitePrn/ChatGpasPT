@@ -1,62 +1,82 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Button, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
-import InputForm from '../components/InputForm';
+import InputForm from '../components/InputForm'
+import { useNavigation } from "@react-navigation/native"
 
 const LoginScreen = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const navigation = useNavigation()
 
     return (
-        <View style={styles.loginContainer}>
-            <Text style={styles.loginTitle}>Login</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.loginContainer}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} >
+                    <Text style={styles.loginTitle}>Login</Text>
 
-            <InputForm 
-                placeholderInput={'Username...'} 
-                valueInput={username} 
-                isSecure={false} 
-                handleChangeInput={(text) => setUsername(text)}
-            />
+                    <InputForm
+                        placeholderInput={'Email...'}
+                        valueInput={email}
+                        isSecure={false}
+                        handleChangeInput={(text) => setEmail(text)}
+                    />
 
-            <InputForm 
-                placeholderInput={'Password...'} 
-                valueInput={password} 
-                isSecure={true} 
-                handleChangeInput={(text) => setPassword(text)}
-            />
+                    <InputForm
+                        placeholderInput={'Password...'}
+                        valueInput={password}
+                        isSecure={true}
+                        handleChangeInput={(text) => setPassword(text)}
+                    />
 
-            <Button 
-                title="Login"
-                color="#007AFF"
-                onPress={() => {}}
-            />
-        </View>
+                    <Button
+                        title="Login"
+                        style={styles.inputLogin}
+                        onPress={() => { }}
+                    />
+
+                    <Pressable
+                        onPress={() => navigation.navigate("Register")}
+                        style={{ marginTop: 20 }}
+                    >
+                        <Text style={styles.signupText}>
+                            Dont't have an account? Sign Up
+                        </Text>
+                    </Pressable>
+                </KeyboardAvoidingView>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 
 export default LoginScreen
 
 const styles = StyleSheet.create({
-    loginTitle:{
-        fontSize: '30px',
+    loginTitle: {
+        fontSize: 30,
         textTransform: 'uppercase',
-        letterSpacing:'2px',
-        color: '#black',
+        textAlign: 'center',
+        letterSpacing: 2,
+        marginBottom: 30,
+        color: '#000000',
         fontWeight: 600
     },
-    loginContainer:{
+    loginContainer: {
         flex: 1,
-        paddingTop: 32,
         alignItems: 'center',
-        gap: '20px',
-        backgroundColor: "#F5F5F5",
+        justifyContent: 'center',
     },
-    inputLogin:{
-        width: '70%',
-        height: 'auto',
-        borderWidth: 2,
-        borderColor: '#007AFF',
-        padding: 10,
-        borderRadius: 5,
-        color: '#DDDDD'
-    }
+    inputLogin: {
+        width: "20%",
+        height: 40,
+        backgroundColor: "#007AFF",
+        borderRadius: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        margin: 16,
+    },
+    signupText: {
+        textAlign: "center",
+        color: "gray",
+        fontSize: 14,
+    },
 })

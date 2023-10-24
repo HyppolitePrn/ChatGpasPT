@@ -37,11 +37,13 @@ export default InputForm
 const styles = StyleSheet.create({
     inputLogin:{
         width: '70%',
+        minWidth: '70%',
         height: 'auto',
         borderBottomWidth: 2,
-        outlineWidth: 0,
+        // outlineWidth: 0,
         padding: 10,
-        color: '#DDDDD',
+        marginBottom: 30,
+        color: '#000000',
     },
     focusInput:{
         borderColor: '#007AFF',

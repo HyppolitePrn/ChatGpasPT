@@ -12,7 +12,7 @@ const Message = ({ text, isUser }) => {
       maxWidth: '70%',
     },
     messageText: {
-      color: isUser ? 'white' : 'black',
+      color: isUser ? '#ffffff' : '#000000',
     },
   });
 

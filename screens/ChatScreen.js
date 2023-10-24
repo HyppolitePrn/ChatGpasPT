@@ -47,7 +47,7 @@ const ChatApp = () => {
         JSON.stringify([...messages, userMessage])
       ).catch((error) => console.error(error));
 
-      
+
     }
   };
 
@@ -100,7 +100,7 @@ const ChatApp = () => {
             <Button
               title="Envoyer"
               style={styles.sendButton}
-              onPress={() => {addMessage(); Keyboard.dismiss();}}
+              onPress={() => { addMessage(); Keyboard.dismiss(); }}
             />
           </View>
         </KeyboardAvoidingView>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
   },
   userMessageText: {
-    color: "white",
+    color: "#ffffff",
   },
   autoMessage: {
     alignSelf: "flex-start",
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
   },
   autoMessageText: {
-    color: "black",
+    color: "#000000",
   },
   inputContainer: {
     width: "100%",
