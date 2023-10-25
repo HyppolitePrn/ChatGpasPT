@@ -32,7 +32,7 @@ mongoose.connect(
     console.log("Error in connecting to MongoDB", err)
 })
 
-app.listen(port, () => {
+app.listen(port, process.env.PRIVATE_IP, () => {
     console.log(`Server is running on port ${port}`)
 })
 

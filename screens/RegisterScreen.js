@@ -18,8 +18,6 @@ const RegisterScreen = () => {
         password
       }
 
-      console.log(process.env.API_URL + '/register')
-
       const options = {
         method: 'POST',
         url: process.env.API_URL + '/register',
