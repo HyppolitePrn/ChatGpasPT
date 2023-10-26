@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View, Pressable, Button, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import InputForm from '../components/InputForm'
 import { useNavigation } from "@react-navigation/native"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useEffect } from 'react/cjs/react.production.min'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("")
@@ -35,7 +34,7 @@ const LoginScreen = () => {
             AsyncStorage.setItem('authToken', token)
 
             navigation.replace("Home")
-            
+
         } catch (error) {
             if (error.response) {
                 console.log(error.response.data.message)
@@ -56,7 +55,7 @@ const LoginScreen = () => {
     useEffect(() => {
         const checkLoggedIn = async () => {
             try {
-                
+
                 const token = await AsyncStorage.getItem('authToken')
 
                 if (token) {
@@ -64,7 +63,7 @@ const LoginScreen = () => {
                 }
 
             } catch (error) {
-                
+
                 console.log("Unexpected error:", error.message)
             }
         }
@@ -96,7 +95,6 @@ const LoginScreen = () => {
                         onPress={handleLogin}
                         title="Login"
                         style={styles.inputLogin}
-                        onPress={() => { }}
                     />
 
                     <Pressable
