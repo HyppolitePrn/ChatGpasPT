@@ -30,16 +30,41 @@ const RegisterScreen = () => {
 
       const response = await axios.request(options)
 
-      Alert.alert(
-        "Success",
-        response.data.message,
-        [
-          { text: "OK", onPress: () => navigation.navigate("Home") }
-        ]
-      )
+      const user = {
+        username: response.data.username,
+        password: response.data.password
+      }
+
+      const optionsLogin = {
+        method: 'POST',
+        url: process.env.API_URL + '/login',
+        data: user,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+
+      const responseLogin = await axios.request(optionsLogin)
+
+      const token = responseLogin.data.token
+
+      AsyncStorage.setItem('authToken', token)
+
+      setUsername("")
+      setEmail("")
+      setPassword("") 
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message)
+
+        Alert.alert(
+          "Error",
+          error.response.data.message,
+          [
+            { text: "OK", onPress: () => navigation.navigate("Login") }
+          ]
+        )
       } else {
         console.log("Unexpected error:", error.message)
       }

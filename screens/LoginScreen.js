@@ -2,11 +2,75 @@ import { StyleSheet, Text, View, Pressable, Button, Keyboard, Platform, Keyboard
 import React, { useState } from 'react'
 import InputForm from '../components/InputForm'
 import { useNavigation } from "@react-navigation/native"
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect } from 'react/cjs/react.production.min'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigation = useNavigation()
+
+    const handleLogin = async () => {
+        try {
+
+            const body = {
+                email,
+                password
+            }
+
+            const options = {
+                method: 'POST',
+                url: process.env.API_URL + '/login',
+                data: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+
+            const response = await axios.request(options)
+
+            const token = response.data.token
+
+            AsyncStorage.setItem('authToken', token)
+
+            navigation.replace("Home")
+            
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response.data.message)
+
+                Alert.alert(
+                    "Error",
+                    error.response.data.message,
+                    [
+                        { text: "OK", onPress: () => navigation.navigate("Login") }
+                    ]
+                )
+            } else {
+                console.log("Unexpected error:", error.message)
+            }
+        }
+    }
+
+    useEffect(() => {
+        const checkLoggedIn = async () => {
+            try {
+                
+                const token = await AsyncStorage.getItem('authToken')
+
+                if (token) {
+                    navigation.replace("Home")
+                }
+
+            } catch (error) {
+                
+                console.log("Unexpected error:", error.message)
+            }
+        }
+
+        checkLoggedIn()
+    }, []);
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -29,6 +93,7 @@ const LoginScreen = () => {
                     />
 
                     <Button
+                        onPress={handleLogin}
                         title="Login"
                         style={styles.inputLogin}
                         onPress={() => { }}
