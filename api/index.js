@@ -42,8 +42,6 @@ const Message = require('./models/Message')
 app.post('/register', (req, res) => {
     const { username, email, password } = req.body
 
-    console.log('username', username)
-
     User.findOne({ email: email }).then(user => {
         if (user) {
             return res.status(400).json({ message: 'Email already exists' })
@@ -69,7 +67,32 @@ const userToken = (userId) => {
         userId
     }
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' })
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '2h' })
 
     return token
 }
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body
+
+    if (!email || !password) {
+        return res.status(422).json({ message: 'Email and password are required' })
+    }
+
+    User.findOne({ email: email }).then(user => {
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Password is incorrect' })
+        }
+
+        const token = userToken(user._id)
+
+        res.status(200).json({ message: 'User logged in successfully', token: token })
+    }).catch(err => {
+        console.log('Error in logging in user', err)
+        res.status(500).json({ message: 'Error in logging in user' })
+    })
+})
