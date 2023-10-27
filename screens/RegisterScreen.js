@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import InputForm from '../components/InputForm'
 import { useNavigation } from "@react-navigation/native"
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("")
@@ -30,30 +31,16 @@ const RegisterScreen = () => {
 
       const response = await axios.request(options)
 
-      const user = {
-        username: response.data.username,
-        password: response.data.password
-      }
-
-      const optionsLogin = {
-        method: 'POST',
-        url: process.env.API_URL + '/login',
-        data: user,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      }
-
-      const responseLogin = await axios.request(optionsLogin)
-
-      const token = responseLogin.data.token
+      const token = response.data.token
 
       AsyncStorage.setItem('authToken', token)
 
       setUsername("")
       setEmail("")
-      setPassword("") 
+      setPassword("")
+
+      navigation.replace("Home")
+
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message)
