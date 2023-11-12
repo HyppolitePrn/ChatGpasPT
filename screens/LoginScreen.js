@@ -8,9 +8,20 @@ import axios from 'axios'
 const LoginScreen = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [emailError, setEmailError] = useState("")
     const navigation = useNavigation()
 
     const handleLogin = async () => {
+
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!emailRegex.test(email)) {
+            setEmailError("Veuillez entrer un email valide");
+            return
+        } else {
+            setEmailError("")
+        }
+
         try {
 
             const body = {
@@ -84,6 +95,7 @@ const LoginScreen = () => {
                         isSecure={false}
                         handleChangeInput={(text) => setEmail(text)}
                     />
+                    {emailError ? <Text style={{ color: 'red' }}>{emailError}</Text> : null}
 
                     <InputForm
                         placeholderInput={'Password...'}
