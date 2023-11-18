@@ -1,18 +1,20 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+import { UserType } from '../UserContext'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
+  const [userId, setUserId] = useContext(UserType)
 
   const removeAuthToken = async () => {
     try {
-      console.log("removeAuthToken")
+      console.log('removeAuthToken')
       await AsyncStorage.removeItem('authToken')
 
-      navigation.replace("Login")
-
+      navigation.replace('Login')
     } catch (error) {
       console.log(error)
     }
@@ -20,13 +22,20 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "",
-      headerLeft: () => (
-        <Text style={styles.headerLeft}>WhatsappRocky</Text>
+      headerTitle: '',
+      headerLeft: () => <Text style={styles.headerLeft}>WhatsappRocky</Text>,
+      headerRight: () => (
+        <View style={styles.headerRight}>
+          <Ionicons name='heart-outline' size={24} color='black' />
+          <Ionicons
+            name='chatbubble-ellipses-outline'
+            size={24}
+            color='black'
+          />
+        </View>
       ),
     })
-
-  }, []);
+  }, [])
 
   return (
     <View style={styles.homeContainer}>
@@ -46,6 +55,11 @@ const styles = StyleSheet.create({
   },
   headerLeft: {
     fontSize: 16,
-    fontWeight: "bold"
-  }
+    fontWeight: 'bold',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
 })

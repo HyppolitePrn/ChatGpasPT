@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
 const Message = ({ text, isUser }) => {
   const styles = StyleSheet.create({
@@ -14,13 +14,13 @@ const Message = ({ text, isUser }) => {
     messageText: {
       color: isUser ? '#ffffff' : '#000000',
     },
-  });
+  })
 
   return (
     <View style={styles.messageContainer}>
       <Text style={styles.messageText}>{text}</Text>
     </View>
-  );
-};
+  )
+}
 
-export default Message;
+export default Message
