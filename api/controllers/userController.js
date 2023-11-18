@@ -1,35 +1,127 @@
-const User = require('../models/User');
+const User = require('../models/User')
+const winston = require('winston')
+const Joi = require('joi')
 
 async function createUser(request, reply) {
-    try {
-      const userData = request.body;
+  try {
+    const schema = Joi.object({
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().min(6).required(),
+      // Add more fields as necessary
+    })
 
-      const user = new User(userData);
-
-      await user.save();
-  
-      reply.code(201).send({ message: 'User created successfully', user });
-
-    } catch (error) {
-
-      reply.status(500).send({ message: 'Error in creating user', error });
+    const { error } = schema.validate(request.body)
+    if (error) {
+      return reply
+        .status(400)
+        .send({ message: 'Invalid user data', error: error.details })
     }
+
+    const userData = request.body
+
+    const user = new User(userData)
+    await user.save()
+
+    const userResponse = { ...user._doc }
+    delete userResponse.password
+
+    reply
+      .code(201)
+      .send({ message: 'User created successfully', user: userResponse })
+  } catch (error) {
+    winston.error('Error in creating user', error)
+
+    if (error.code === 11000) {
+      reply.status(400).send({ message: 'Email already exists' })
+    } else {
+      reply.status(500).send({ message: 'Error in creating user' })
+    }
+  }
 }
 
 async function getAllUsers(request, reply) {
-    try {
+  try {
+    const { page = 1, limit = 10 } = request.query
 
-      const users = await User.find();
+    const users = await User.find({ _id: { $ne: request.user.id } })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec()
 
-      reply.send(users);
+    const count = await User.countDocuments()
 
-    } catch (error) {
+    reply.send({
+      users,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    })
+  } catch (error) {
+    winston.error('Error in fetching users', error) // log the error
+    reply.status(500).send({ message: 'Error in fetching users' })
+  }
+}
 
-      reply.status(500).send({ message: 'Error in fetching users', error });
+async function updateUser(request, reply) {
+  try {
+    const schema = Joi.object({
+      name: Joi.string(),
+      email: Joi.string().email(),
+      password: Joi.string().min(6),
+      // Add more fields as necessary
+    })
+
+    const { error } = schema.validate(request.body)
+    if (error) {
+      return reply
+        .status(400)
+        .send({ message: 'Invalid user data', error: error.details })
     }
+
+    const updateData = request.body
+
+    const user = await User.findByIdAndUpdate(request.params.id, updateData, {
+      new: true,
+    })
+
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' })
+    }
+
+    const userResponse = { ...user._doc }
+    delete userResponse.password // Do not return password
+
+    reply.send({ message: 'User updated successfully', user: userResponse })
+  } catch (error) {
+    winston.error('Error in updating user', error) // log the error
+
+    if (error.code === 11000) {
+      // MongoDB duplicate key error
+      reply.status(400).send({ message: 'Email already exists' })
+    } else {
+      reply.status(500).send({ message: 'Error in updating user' })
+    }
+  }
+}
+
+async function deleteUser(request, reply) {
+  try {
+    const user = await User.findByIdAndDelete(request.params.id)
+
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' })
+    }
+
+    reply.send({ message: 'User deleted successfully' })
+  } catch (error) {
+    winston.error('Error in deleting user', error) // log the error
+    reply.status(500).send({ message: 'Error in deleting user' })
+  }
 }
 
 module.exports = {
-    createUser,
-    getAllUsers
-};
+  createUser,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+}

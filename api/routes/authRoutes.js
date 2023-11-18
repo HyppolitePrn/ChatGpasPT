@@ -1,4 +1,4 @@
-const authController = require('../controllers/authController');
+const authController = require('../controllers/authController')
 
 module.exports = [
   {
@@ -15,5 +15,5 @@ module.exports = [
     method: 'POST',
     url: '/logout',
     handler: authController.logout,
-  }
-];
+  },
+]

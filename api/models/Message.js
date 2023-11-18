@@ -1,31 +1,31 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const messageSchema = new mongoose.Schema({
   messageAuthorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: 'User',
   },
   recipientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: 'User',
   },
   messageType: {
     type: String,
     required: true,
-    enum: ['text', 'image']
+    enum: ['text', 'image'],
   },
   message: {
     type: String,
-    required: true
+    required: true,
   },
   imageUrl: {
     type: String,
-    required: false
+    required: false,
   },
   timeStamp: {
     type: Date,
     required: true,
-    default: Date.now
+    default: Date.now,
   },
 })
 
