@@ -87,7 +87,7 @@ function generateToken(userId) {
     userId,
   }
 
-  const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '2h' })
+  const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' })
 
   return token
 }

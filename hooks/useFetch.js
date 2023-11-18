@@ -1,41 +1,32 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { REACT_APP_API_URL } from '@env'
+import { useState, useEffect, useMemo } from 'react'
 
-const useFetch = (endpoint, query) => {
+const useFetch = (endpoint, initialOptions) => {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const options = {
-    method: 'GET',
-    url: REACT_APP_API_URL + endpoint,
-    data: body,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    query: {
-      ...query,
-    },
-  }
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true)
-      const response = await axios.request(options)
-      setData(response.data)
-    } catch (error) {
-      setError(error)
-      setIsLoading(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+  const options = useMemo(() => initialOptions, [initialOptions])
+  console.log(options)
   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        const response = await fetch(process.env.API_URL + endpoint, options)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setData(data)
+      } catch (error) {
+        setError(error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
     fetchData()
-  }, [])
+  }, [endpoint, options])
+  console.log(data)
 
   return { data, error, isLoading }
 }

@@ -1,19 +1,18 @@
-// middlewares/authMiddleware.js
+require('dotenv').config()
 
 const jwt = require('jsonwebtoken')
 
 module.exports = async function (fastify) {
-  // Add a preHandler to every route
   fastify.addHook('preHandler', async (request, reply) => {
     const whitelist = ['/login', '/register']
 
-    // If the route is in the whitelist, skip token verification
-    if (whitelist.includes(request.routerPath)) {
+    if (whitelist.includes(request.routeOptions.url)) {
       return
     }
 
     try {
       const authHeader = request.headers.authorization
+
       if (!authHeader) {
         throw new Error('Authentication failed. Please provide a token.')
       }
@@ -21,7 +20,7 @@ module.exports = async function (fastify) {
       const token = authHeader.split(' ')[1]
       const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
-      request.user = { id: decoded.id }
+      request.user = { id: decoded.userId }
     } catch (err) {
       reply.code(401).send({ message: err.message })
     }

@@ -1,13 +1,26 @@
+import { decode as atob } from 'base-64'
+global.atob = atob
+
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React, { useContext, useLayoutEffect } from 'react'
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { UserType } from '../UserContext'
+import { jwtDecode } from 'jwt-decode'
+import useFetch from '../hooks/useFetch'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
-  const [userId, setUserId] = useContext(UserType)
+  const [users, setUsers] = useState([])
+  const [token, setToken] = useState(null)
+  const { userId, setUserId } = useContext(UserType)
 
   const removeAuthToken = async () => {
     try {
@@ -26,7 +39,12 @@ const HomeScreen = () => {
       headerLeft: () => <Text style={styles.headerLeft}>WhatsappRocky</Text>,
       headerRight: () => (
         <View style={styles.headerRight}>
-          <Ionicons name='heart-outline' size={24} color='black' />
+          <Ionicons
+            name='heart-outline'
+            size={24}
+            color='black'
+            onPress={() => navigation.navigate('Notifications')}
+          />
           <Ionicons
             name='chatbubble-ellipses-outline'
             size={24}
@@ -35,6 +53,21 @@ const HomeScreen = () => {
         </View>
       ),
     })
+  }, [])
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = await AsyncStorage.getItem('authToken')
+        const decodedToken = jwtDecode(token)
+        const userId = decodedToken.userId
+        setUserId(userId)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchUser()
   }, [])
 
   return (
@@ -56,10 +89,12 @@ const styles = StyleSheet.create({
   headerLeft: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    marginRight: 8,
   },
 })
