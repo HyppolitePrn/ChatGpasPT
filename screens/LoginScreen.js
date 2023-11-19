@@ -38,20 +38,23 @@ const LoginScreen = () => {
         email,
         password,
       }
-      console.log(process.env.REACT_APP_API_URL)
-      const options = {
+
+      const response = await fetch(process.env.REACT_APP_API_URL + '/login', {
         method: 'POST',
-        url: process.env.REACT_APP_API_URL + '/login',
-        data: body,
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
+        body: JSON.stringify(body),
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
       }
 
-      const response = await axios.request(options)
+      const data = await response.json()
 
-      const token = response.data.token
+      const token = data.token
 
       AsyncStorage.setItem('authToken', token)
 
