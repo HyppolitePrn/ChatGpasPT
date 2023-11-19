@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   username: {
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   userState: {
     fontSize: '10px',

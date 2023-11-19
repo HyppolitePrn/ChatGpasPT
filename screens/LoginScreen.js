@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     marginBottom: 30,
     color: '#000000',
-    fontWeight: 600,
+    fontWeight: 'bold',
   },
   loginContainer: {
     flex: 1,
