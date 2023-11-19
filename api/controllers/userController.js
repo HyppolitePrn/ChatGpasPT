@@ -29,8 +29,6 @@ async function createUser(request, reply) {
       .code(201)
       .send({ message: 'User created successfully', user: userResponse })
   } catch (error) {
-
-
     if (error.code === 11000) {
       reply.status(400).send({ message: 'Email already exists' })
     } else {
@@ -55,7 +53,8 @@ async function getAllUsers(request, reply) {
       totalPages: Math.ceil(count / limit),
       currentPage: page,
     })
-  } catch (error) {// log the error
+  } catch (error) {
+    // log the error
     reply.status(500).send({ message: 'Error in fetching users' })
   }
 }
@@ -91,7 +90,6 @@ async function updateUser(request, reply) {
 
     reply.send({ message: 'User updated successfully', user: userResponse })
   } catch (error) {
-
     if (error.code === 11000) {
       // MongoDB duplicate key error
       reply.status(400).send({ message: 'Email already exists' })
@@ -119,7 +117,10 @@ async function getUserFriends(request, reply) {
   let userId = request.params.id
 
   try {
-    const user = await User.findById(userId).populate('friends', 'username email')
+    const user = await User.findById(userId).populate(
+      'friends',
+      'username email'
+    )
 
     if (!user) {
       return reply.status(404).send({ message: 'User not found' })

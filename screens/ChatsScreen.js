@@ -1,4 +1,11 @@
-import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Pressable } from 'react-native'
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { UserType } from '../UserContext'
@@ -33,9 +40,7 @@ const ChatsScreen = () => {
           setFriends(data)
         }
       } catch (error) {
-
         console.error('Error:', error)
-
       } finally {
         setIsLoading(false)
       }
@@ -53,7 +58,7 @@ const ChatsScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Pressable>
-        {friends?.map((friend) => (
+        {friends?.map(friend => (
           <UserChat user={friend} key={friend?._id} />
         ))}
       </Pressable>
