@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { UserType } from '../UserContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import config from '../config.env.json'
 
 const UserCard = ({ user }) => {
   const { userId, setUserId } = useContext(UserType)
@@ -11,7 +12,7 @@ const UserCard = ({ user }) => {
   const sendFriendRequest = async (from, to) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/friend-requests`,
+        `${config.REACT_APP_API_URL}/friend-requests`,
         {
           method: 'POST',
           headers: {

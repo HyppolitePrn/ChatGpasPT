@@ -15,6 +15,7 @@ import InputForm from '../components/InputForm'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import config from '../config.env.json'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
@@ -39,7 +40,7 @@ const LoginScreen = () => {
         password,
       }
 
-      const response = await fetch(process.env.REACT_APP_API_URL + '/login', {
+      const response = await fetch(config.REACT_APP_API_URL + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

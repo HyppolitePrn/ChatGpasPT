@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import config from '../config.env.json'
 
 const useFetch = (endpoint, initialOptions) => {
   const [data, setData] = useState(null)
@@ -12,7 +13,7 @@ const useFetch = (endpoint, initialOptions) => {
       setIsLoading(true)
       try {
         const response = await fetch(
-          process.env.REACT_APP_API_URL + endpoint,
+          config.REACT_APP_API_URL + endpoint,
           options
         )
         if (!response.ok) {

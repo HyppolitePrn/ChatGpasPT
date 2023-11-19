@@ -1,5 +1,4 @@
 const User = require('../models/User')
-const winston = require('winston')
 const Joi = require('joi')
 
 async function createUser(request, reply) {
@@ -30,7 +29,7 @@ async function createUser(request, reply) {
       .code(201)
       .send({ message: 'User created successfully', user: userResponse })
   } catch (error) {
-    winston.error('Error in creating user', error)
+
 
     if (error.code === 11000) {
       reply.status(400).send({ message: 'Email already exists' })
@@ -56,8 +55,7 @@ async function getAllUsers(request, reply) {
       totalPages: Math.ceil(count / limit),
       currentPage: page,
     })
-  } catch (error) {
-    winston.error('Error in fetching users', error) // log the error
+  } catch (error) {// log the error
     reply.status(500).send({ message: 'Error in fetching users' })
   }
 }
@@ -93,7 +91,6 @@ async function updateUser(request, reply) {
 
     reply.send({ message: 'User updated successfully', user: userResponse })
   } catch (error) {
-    winston.error('Error in updating user', error) // log the error
 
     if (error.code === 11000) {
       // MongoDB duplicate key error
@@ -114,7 +111,6 @@ async function deleteUser(request, reply) {
 
     reply.send({ message: 'User deleted successfully' })
   } catch (error) {
-    winston.error('Error in deleting user', error) // log the error
     reply.status(500).send({ message: 'Error in deleting user' })
   }
 }
@@ -123,7 +119,7 @@ async function getUserFriends(request, reply) {
   let userId = request.params.id
 
   try {
-    const user = await User.findById(userId).populate('friends', 'name email')
+    const user = await User.findById(userId).populate('friends', 'username email')
 
     if (!user) {
       return reply.status(404).send({ message: 'User not found' })
@@ -131,7 +127,6 @@ async function getUserFriends(request, reply) {
 
     reply.send(user.friends)
   } catch (error) {
-    winston.error('Error in getting user friends', error)
     reply.status(500).send({ message: 'Error in getting user friends' })
   }
 }

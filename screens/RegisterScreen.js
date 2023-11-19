@@ -15,6 +15,7 @@ import InputForm from '../components/InputForm'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import config from '../config.env.json'
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState('')
@@ -43,7 +44,7 @@ const RegisterScreen = () => {
 
       const options = {
         method: 'POST',
-        url: process.env.REACT_APP_API_URL + '/register',
+        url: config.REACT_APP_API_URL + '/register',
         data: body,
         headers: {
           'Content-Type': 'application/json',

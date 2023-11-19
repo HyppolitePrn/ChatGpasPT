@@ -3,6 +3,7 @@ import { formatDistanceToNow } from 'date-fns'
 import React, { useContext, useState } from 'react'
 import { UserType } from '../UserContext'
 import { ActivityIndicator } from 'react-native'
+import config from '../config.env.json'
 
 const FriendRequest = ({
   friendRequest,
@@ -16,7 +17,7 @@ const FriendRequest = ({
     try {
       setIsLoading(true)
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/friend-requests/accept/${friendRequest._id}`,
+        `${config.REACT_APP_API_URL}/friend-requests/accept/${friendRequest._id}`,
         {
           method: 'PUT',
           headers: {

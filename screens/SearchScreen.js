@@ -11,6 +11,7 @@ import useFetch from '../hooks/useFetch'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import UserCard from '../components/UserCard'
 import { UserContext, UserType } from '../UserContext'
+import config from '../config.env.json'
 
 const SearchScreen = () => {
   const [users, setUsers] = useState([])
@@ -41,7 +42,7 @@ const SearchScreen = () => {
       try {
         setIsLoading(true)
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+        const response = await fetch(`${config.REACT_APP_API_URL}/users`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },

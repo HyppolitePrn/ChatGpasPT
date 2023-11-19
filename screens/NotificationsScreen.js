@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserType } from '../UserContext'
 import { ActivityIndicator } from 'react-native'
 import FriendRequest from '../components/FriendRequest'
+import config from '../config.env.json'
 
 const NotificationsScreen = () => {
   const { userId, setUserId, authToken, setAuthToken } = useContext(UserType)
@@ -14,9 +15,9 @@ const NotificationsScreen = () => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true)
-        console.log(process.env.REACT_APP_API_URL)
+
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/friend-requests/users/${userId}`,
+          `${config.REACT_APP_API_URL}/friend-requests/users/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
