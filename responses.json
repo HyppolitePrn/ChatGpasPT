@@ -1,24 +1,24 @@
 {
-  "reponses": [
-    "Salut !",
-    "Bonjour !",
-    "Comment ça va ?",
-    "Je suis une réponse automatique.",
-    "C'est un chat simple, n'est-ce pas ?",
-    "Je suis un message au hasard !",
-    "Super !",
-    "Ça va bien, et toi ?",
-    "En quoi puis-je vous aider ?",
-    "Bien sûr !",
-    "D'accord !",
-    "Oui, bien sûr !",
-    "Non, désolé.",
-    "Je ne sais pas.",
-    "C'est intéressant !",
-    "Merci !",
-    "Au revoir !",
-    "À la prochaine !",
-    "Bonne journée !",
-    "Amusez-vous bien !"
-  ]
+    "reponses": [
+        "Salut !",
+        "Bonjour !",
+        "Comment ça va ?",
+        "Je suis une réponse automatique.",
+        "C'est un chat simple, n'est-ce pas ?",
+        "Je suis un message au hasard !",
+        "Super !",
+        "Ça va bien, et toi ?",
+        "En quoi puis-je vous aider ?",
+        "Bien sûr !",
+        "D'accord !",
+        "Oui, bien sûr !",
+        "Non, désolé.",
+        "Je ne sais pas.",
+        "C'est intéressant !",
+        "Merci !",
+        "Au revoir !",
+        "À la prochaine !",
+        "Bonne journée !",
+        "Amusez-vous bien !"
+    ]
 }

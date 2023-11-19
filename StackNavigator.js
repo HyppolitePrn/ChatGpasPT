@@ -10,63 +10,70 @@ import HomeScreen from './screens/HomeScreen'
 import SearchScreen from './screens/SearchScreen'
 import NotificationsScreen from './screens/NotificationsScreen'
 import ChatsScreen from './screens/ChatsScreen'
+import ChatMessagesScreen from './screens/ChatMessagesScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function HomeTabs() {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, size }) => {
-          let iconName
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, size }) => {
+                    let iconName
 
-          if (route.name === 'Feed') {
-            iconName = focused ? 'home' : 'home-outline'
-          } else if (route.name === 'Search') {
-            iconName = focused ? 'search' : 'search-outline'
-          }
+                    if (route.name === 'Feed') {
+                        iconName = focused ? 'home' : 'home-outline'
+                    } else if (route.name === 'Search') {
+                        iconName = focused ? 'search' : 'search-outline'
+                    }
 
-          return <Ionicons name={iconName} size={size} color='black' />
-        },
-        tabBarShowLabel: false,
-      })}
-    >
-      <Tab.Screen name='Feed' component={HomeScreen} />
-      <Tab.Screen
-        name='Search'
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
-    </Tab.Navigator>
-  )
+                    return (
+                        <Ionicons name={iconName} size={size} color='black' />
+                    )
+                },
+                tabBarShowLabel: false,
+            })}
+        >
+            <Tab.Screen name='Feed' component={HomeScreen} />
+            <Tab.Screen
+                name='Search'
+                component={SearchScreen}
+                options={{ headerShown: false }}
+            />
+        </Tab.Navigator>
+    )
 }
 
 const StackNavigator = () => {
-  return (
-    <NavigationContainer>
-      <StatusBar barStyle='dark-content' />
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Login'
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Register'
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name='Notifications' component={NotificationsScreen} />
-        <Stack.Screen name='Chats' component={ChatsScreen} />
-        <Stack.Screen
-          name='Home'
-          component={HomeTabs}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
+    return (
+        <NavigationContainer>
+            <StatusBar barStyle='dark-content' />
+            <Stack.Navigator>
+                <Stack.Screen
+                    name='Login'
+                    component={LoginScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='Register'
+                    component={RegisterScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='Notifications'
+                    component={NotificationsScreen}
+                />
+                <Stack.Screen name='Chats' component={ChatsScreen} />
+                <Stack.Screen name='Messages' component={ChatMessagesScreen} />
+                <Stack.Screen
+                    name='Home'
+                    component={HomeTabs}
+                    options={{ headerShown: false }}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
 }
 
 export default StackNavigator
