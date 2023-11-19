@@ -11,7 +11,10 @@ const useFetch = (endpoint, initialOptions) => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        const response = await fetch(process.env.API_URL + endpoint, options)
+        const response = await fetch(
+          process.env.REACT_APP_API_URL + endpoint,
+          options
+        )
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

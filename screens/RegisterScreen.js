@@ -43,7 +43,7 @@ const RegisterScreen = () => {
 
       const options = {
         method: 'POST',
-        url: process.env.API_URL + '/register',
+        url: process.env.REACT_APP_API_URL + '/register',
         data: body,
         headers: {
           'Content-Type': 'application/json',

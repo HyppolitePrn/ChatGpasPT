@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   ActivityIndicator,
   Platform,
@@ -10,11 +10,13 @@ import { SearchBar } from 'react-native-elements'
 import useFetch from '../hooks/useFetch'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import UserCard from '../components/UserCard'
+import { UserContext, UserType } from '../UserContext'
 
 const SearchScreen = () => {
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const { authToken, setAuthToken } = useContext(UserType)
   // const [token, setToken] = useState('')
 
   // const options = useMemo(
@@ -38,11 +40,10 @@ const SearchScreen = () => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true)
-        const token = await AsyncStorage.getItem('authToken')
 
-        const response = await fetch(`${process.env.API_URL}/users`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
           },
         })
 
@@ -60,7 +61,9 @@ const SearchScreen = () => {
   }, [])
 
   if (isLoading) {
-    return <ActivityIndicator size='large' color='#000000' />
+    return (
+      <ActivityIndicator style={styles.loading} size='large' color='#000000' />
+    )
   }
 
   return (
@@ -87,5 +90,10 @@ const styles = StyleSheet.create({
   PageContainer: {
     flex: 1,
     marginTop: 48,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

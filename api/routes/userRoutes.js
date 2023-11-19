@@ -21,4 +21,9 @@ module.exports = [
     url: '/users/:id',
     handler: userController.deleteUser,
   },
+  {
+    method: 'GET',
+    url: '/users/:id/friends',
+    handler: userController.getUserFriends,
+  },
 ]

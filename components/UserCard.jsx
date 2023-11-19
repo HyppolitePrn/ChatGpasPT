@@ -6,19 +6,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const UserCard = ({ user }) => {
   const { userId, setUserId } = useContext(UserType)
   const [requestSent, setRequestSent] = useState(false)
+  const { authToken, setAuthToken } = useContext(UserType)
 
   const sendFriendRequest = async (from, to) => {
     try {
-      const token = await AsyncStorage.getItem('authToken')
-
-      const response = await fetch(`${process.env.API_URL}/friend-requests`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ from, to }),
-      })
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/friend-requests`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ from, to }),
+        }
+      )
 
       if (response.ok) {
         setRequestSent(true)

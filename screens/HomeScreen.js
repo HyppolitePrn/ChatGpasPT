@@ -20,7 +20,7 @@ const HomeScreen = () => {
   const navigation = useNavigation()
   const [users, setUsers] = useState([])
   const [token, setToken] = useState(null)
-  const { userId, setUserId } = useContext(UserType)
+  const { userId, setUserId, authToken, setAuthToken } = useContext(UserType)
 
   const removeAuthToken = async () => {
     try {
@@ -49,6 +49,7 @@ const HomeScreen = () => {
             name='chatbubble-ellipses-outline'
             size={24}
             color='black'
+            onPress={() => navigation.navigate('Chats')}
           />
         </View>
       ),
@@ -59,6 +60,7 @@ const HomeScreen = () => {
     const fetchUser = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken')
+        setAuthToken(token)
         const decodedToken = jwtDecode(token)
         const userId = decodedToken.userId
         setUserId(userId)

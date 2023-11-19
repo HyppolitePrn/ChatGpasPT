@@ -38,10 +38,10 @@ const LoginScreen = () => {
         email,
         password,
       }
-
+      console.log(process.env.REACT_APP_API_URL)
       const options = {
         method: 'POST',
-        url: process.env.API_URL + '/login',
+        url: process.env.REACT_APP_API_URL + '/login',
         data: body,
         headers: {
           'Content-Type': 'application/json',

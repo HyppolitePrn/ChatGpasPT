@@ -9,6 +9,7 @@ import RegisterScreen from './screens/RegisterScreen'
 import HomeScreen from './screens/HomeScreen'
 import SearchScreen from './screens/SearchScreen'
 import NotificationsScreen from './screens/NotificationsScreen'
+import ChatsScreen from './screens/ChatsScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -57,6 +58,7 @@ const StackNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name='Notifications' component={NotificationsScreen} />
+        <Stack.Screen name='Chats' component={ChatsScreen} />
         <Stack.Screen
           name='Home'
           component={HomeTabs}

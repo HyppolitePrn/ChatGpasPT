@@ -119,9 +119,27 @@ async function deleteUser(request, reply) {
   }
 }
 
+async function getUserFriends(request, reply) {
+  let userId = request.params.id
+
+  try {
+    const user = await User.findById(userId).populate('friends', 'name email')
+
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' })
+    }
+
+    reply.send(user.friends)
+  } catch (error) {
+    winston.error('Error in getting user friends', error)
+    reply.status(500).send({ message: 'Error in getting user friends' })
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
   updateUser,
   deleteUser,
+  getUserFriends,
 }
