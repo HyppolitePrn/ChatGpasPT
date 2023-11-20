@@ -32,6 +32,8 @@ const UserCard = ({ user }) => {
             console.log(error)
         }
     }
+    console.log(user?.friends?.includes(userId))
+    
 
     return (
         <Pressable style={styles.container}>
@@ -52,10 +54,11 @@ const UserCard = ({ user }) => {
             </View>
 
             <Pressable
+                disabled={user?.friends?.includes(userId) || requestSent}
                 onPress={() => sendFriendRequest(userId, user._id)}
-                style={styles.followButton}
+                style={{...styles.followButton, backgroundColor: user?.friends?.includes(userId) ? 'gray' : 'black' }}
             >
-                <Text style={styles.followButtonText}>Follow</Text>
+                <Text style={styles.followButtonText}>{requestSent ? 'Envoyé' : user?.friends?.includes(userId) ? 'Friend' : 'Follow'}</Text>
             </Pressable>
         </Pressable>
     )
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     followButton: {
-        backgroundColor: 'black',
+        
         padding: 10,
         borderRadius: 10,
         minWidth: 100,

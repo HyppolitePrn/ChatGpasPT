@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = async function (fastify) {
     fastify.addHook('preHandler', async (request, reply) => {
-        const whitelist = ['/login', '/register']
+        const whitelist = ['/login', '/register', '/files']
 
         if (whitelist.includes(request.routeOptions.url)) {
             return

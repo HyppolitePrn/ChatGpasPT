@@ -77,7 +77,7 @@ const HomeScreen = () => {
     return (
         <View style={styles.homeContainer}>
             <Text>HomeScreen</Text>
-            <Button title='test' onPress={removeAuthToken} />
+            <Button title='Deconnexion' onPress={removeAuthToken} />
         </View>
     )
 }

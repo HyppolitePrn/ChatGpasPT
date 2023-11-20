@@ -18,6 +18,8 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import config from '../config.env.json'
 import EmojiSelector from 'react-native-emoji-selector'
 import { Image } from 'react-native'
+import { formatDistanceToNow } from 'date-fns'
+import * as ImagePicker from 'expo-image-picker'
 
 const ChatMessagesScreen = () => {
     const [showEmojiSelected, setShowEmojiSelected] = useState(false)
@@ -131,6 +133,8 @@ const ChatMessagesScreen = () => {
             if (response.ok) {
                 setMessage('')
                 setSelectedImage('')
+
+                fetchMessages()
             }
         } catch (error) {
             console.log('error in sending the message:', error)
@@ -169,6 +173,19 @@ const ChatMessagesScreen = () => {
         })
     }, [recepientData])
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        })
+
+        if (!result.canceled) {
+            handleSend('image', result.uri)
+        }
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -176,7 +193,7 @@ const ChatMessagesScreen = () => {
         >
             <ScrollView>
                 {messages?.map((mess, index) => {
-                    if (mess.messageType === 'text') {
+                    if (mess?.messageType === 'text') {
                         return (
                             <Pressable
                                 style={[
@@ -186,9 +203,54 @@ const ChatMessagesScreen = () => {
                                 ]}
                                 key={mess?._id}
                             >
-                                <Text style={{ color: 'white' }}>
+                                <Text style={{ color: 'white', fontSize: 13, textAlign: 'left' }}>
                                     {mess?.message}
                                 </Text>
+                                <Text style={styles.messageDate}>
+                                    {formatDistanceToNow(
+                                        new Date(mess?.timeStamp),
+                                        {
+                                            addSuffix: true,
+                                        }
+                                    )}
+                                </Text>
+                            </Pressable>
+                        )
+                    }
+
+                    if (mess?.messageType === 'image') {
+                        const baseUrl = "/home/nangaim/Bureau/hetic/whatsappRocky/api/files/"
+                        const imageUrl = mess?.imageUrl
+                        const fileName = imageUrl.split('/').pop()
+                        const src = baseUrl + fileName
+                        const source = { uri: baseUrl + fileName }
+
+                        console.log('../api/' + imageUrl)
+
+                        return (
+                            <Pressable
+                                style={[
+                                    mess?.from?._id === userId
+                                        ? styles.senderMessage
+                                        : {},
+                                ]}
+                                key={mess?._id}
+                            >
+                                <View>
+                                    <Image style={{ width: 200, height: 200, borderRadius: 7 }} source={{ uri: 'api/' + imageUrl }} />
+
+                                    <Text style={styles.messageDate}>
+                                        {formatDistanceToNow(
+                                            new Date(mess?.timeStamp),
+                                            {
+                                                addSuffix: true,
+                                            }
+                                        )}
+                                    </Text>
+
+                                    <Text style={{ color: 'white' }}>{'api/' + imageUrl}</Text>
+                                </View>
+
                             </Pressable>
                         )
                     }
@@ -219,6 +281,7 @@ const ChatMessagesScreen = () => {
                     />
                     <View style={styles.iconsContainer}>
                         <Ionicons
+                            onPress={pickImage}
                             name='camera-outline'
                             size={28}
                             color='black'
@@ -322,8 +385,23 @@ const styles = StyleSheet.create({
     senderMessage: {
         alignSelf: 'flex-end',
         backgroundColor: 'black',
-        padding: 8,
+        padding: 10,
         maxWidth: '60%',
-        borderRadius: 6,
+        borderRadius: 8,
+        margin: 10,
+    },
+    recepientMessage: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'gray',
+        padding: 8,
+        margin: 10,
+        maxWidth: '60%',
+        borderRadius: 8,
+    },
+    messageDate: {
+        color: 'gray',
+        textAlign: 'right',
+        fontSize: 8,
+        marginTop: 6,
     },
 })

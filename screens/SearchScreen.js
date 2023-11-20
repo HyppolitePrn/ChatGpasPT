@@ -36,30 +36,31 @@ const SearchScreen = () => {
             user.username.toLowerCase().includes(term.toLowerCase())
         )
     }
+    const fetchUsers = async () => {
+        try {
+            setIsLoading(true)
+
+            const response = await fetch(
+                `${config.REACT_APP_API_URL}/users`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                }
+            )
+
+            const data = await response.json()
+
+            setUsers(data.users)
+        } catch (error) {
+            console.error('Error:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setIsLoading(true)
 
-                const response = await fetch(
-                    `${config.REACT_APP_API_URL}/users`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                    }
-                )
-
-                const data = await response.json()
-
-                setUsers(data.users)
-            } catch (error) {
-                console.error('Error:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
 
         fetchUsers()
     }, [])
