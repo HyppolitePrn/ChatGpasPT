@@ -3,10 +3,14 @@ require('dotenv').config()
 const fastify = require('fastify')({ logger: true })
 const mongoose = require('mongoose')
 const cors = require('@fastify/cors')
-const routes = require('./routes')
 const authMiddleware = require('./middlewares/authMiddleware')
-
 const io = require('socket.io')(fastify.server)
+
+const multer = require('fastify-multer')
+
+fastify.register(multer.contentParser)
+
+const routes = require('./routes')(fastify)
 
 authMiddleware(fastify)
 

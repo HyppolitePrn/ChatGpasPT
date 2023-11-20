@@ -59,6 +59,18 @@ async function getAllUsers(request, reply) {
     }
 }
 
+async function getUserById(request, reply) {
+    try {
+        const user = await User.findById(request.params.id)
+        if (!user) {
+            return reply.status(404).send({ message: 'User not found' })
+        }
+        reply.send(user)
+    } catch (error) {
+        reply.status(500).send({ message: 'Error in getting user' })
+    }
+}
+
 async function updateUser(request, reply) {
     try {
         const schema = Joi.object({
@@ -142,4 +154,5 @@ module.exports = {
     updateUser,
     deleteUser,
     getUserFriends,
+    getUserById,
 }

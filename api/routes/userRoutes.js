@@ -12,6 +12,11 @@ module.exports = [
         handler: userController.createUser,
     },
     {
+        method: 'GET',
+        url: '/users/:id',
+        handler: userController.getUserById,
+    },
+    {
         method: 'PUT',
         url: '/users/:id',
         handler: userController.updateUser,
